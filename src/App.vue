@@ -119,7 +119,8 @@ function openMenuByRect(id: number, r: DOMRect) {
 function openMenu(e: Event, m: Message) {
   e.preventDefault()
   e.stopPropagation()
-  const bubble = (e.currentTarget as HTMLElement).closest('.bubble')
+  const root = (e.currentTarget as HTMLElement).closest('.message-row')
+  const bubble = (e.currentTarget as HTMLElement).closest('.bubble') ?? root?.querySelector('.bubble')
   if (bubble) openMenuByRect(m.id, bubble.getBoundingClientRect())
 }
 function lastMenu() {
@@ -212,7 +213,7 @@ function runDemo(key: string) {
 }
 function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape') { menu.value = null; showEmoji.value = false; showAbout.value = false }
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); mobileChats.value = true; searchInput.value?.focus() }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); mobileChats.value = true; void nextTick(() => searchInput.value?.focus()) }
 }
 const onMediaChange = (e: MediaQueryListEvent) => { osReduced.value = e.matches }
 onMounted(() => {
